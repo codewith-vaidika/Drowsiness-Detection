@@ -18,7 +18,7 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-family: Georgia, 'Times New Roman', Times, serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -33,7 +33,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #223043;
   border-radius: 4px;
 }
 
