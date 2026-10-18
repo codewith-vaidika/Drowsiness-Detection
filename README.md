@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.svg" alt="Drowsiness Detection" width="100%"/>
+  <img src="assets/banner.png" alt="Drowsiness Detection" width="100%"/>
 </p>
 
 <p align="center">
@@ -40,7 +40,7 @@ A webcam-based edge node spots prolonged eye closure, sounds a local alarm and r
 ## Architecture
 
 <p align="center">
-  <img src="assets/architecture.svg" alt="System architecture" width="100%"/>
+  <img src="assets/architecture.png" alt="System architecture" width="100%"/>
 </p>
 
 ```mermaid
@@ -66,7 +66,7 @@ sequenceDiagram
 ## How detection works
 
 <p align="center">
-  <img src="assets/ear.svg" alt="Eye Aspect Ratio" width="100%"/>
+  <img src="assets/ear.png" alt="Eye Aspect Ratio" width="100%"/>
 </p>
 
 1. OpenCV captures a frame from the webcam.
