@@ -1,5 +1,8 @@
+<h1 align="center">👁️ Drowsiness Detection</h1>
+<h3 align="center">Driver fleet safety: edge detection → REST API → live dashboard</h3>
+
 <p align="center">
-  <img src="assets/banner.png" alt="Drowsiness Detection" width="100%"/>
+  <img alt="Eyes closed 5s alarm" src="https://img.shields.io/badge/EYES%20CLOSED%20%E2%89%88%205s-ALARM%20%2B%20ALERT-red?style=for-the-badge"/>
 </p>
 
 <p align="center">
@@ -39,9 +42,27 @@ A webcam-based edge node spots prolonged eye closure, sounds a local alarm and r
 
 ## Architecture
 
-<p align="center">
-  <img src="assets/architecture.png" alt="System architecture" width="100%"/>
-</p>
+```mermaid
+flowchart LR
+    subgraph EDGE["🖥️ Edge node (in the vehicle)"]
+        E["Python<br/>OpenCV + MediaPipe<br/>EAR detection + alarm"]
+    end
+    subgraph SERVER["☁️ Backend"]
+        A["Express REST API"]
+        M[("MongoDB<br/>Mongoose")]
+    end
+    subgraph UI["📊 Frontend"]
+        D["React + TypeScript<br/>Dashboard"]
+    end
+    E -- "POST /api/alerts<br/>x-api-key" --> A
+    A <-- "store / query" --> M
+    D -- "GET every 10 s" --> A
+
+    style E fill:#0f766e,stroke:#5eead4,stroke-width:3px,color:#fff
+    style A fill:#15803d,stroke:#86efac,stroke-width:3px,color:#fff
+    style M fill:#6d28d9,stroke:#c4b5fd,stroke-width:3px,color:#fff
+    style D fill:#1d4ed8,stroke:#93c5fd,stroke-width:3px,color:#fff
+```
 
 ```mermaid
 sequenceDiagram
@@ -65,9 +86,23 @@ sequenceDiagram
 
 ## How detection works
 
-<p align="center">
-  <img src="assets/ear.png" alt="Eye Aspect Ratio" width="100%"/>
-</p>
+The detector measures the **Eye Aspect Ratio (EAR)** from six landmarks around each eye:
+
+```text
+             p2        p3
+          .--*----------*--.
+     p1  *                   *  p4
+          '--*----------*--'
+             p6        p5
+
+  EAR = ( |p2 - p6| + |p3 - p5| ) / ( 2 * |p1 - p4| )
+
+  vertical openings / horizontal width, left and right eye averaged
+
+  EAR >= 0.22  ->  eyes open
+  EAR <  0.22  ->  eyes counted as closed  (EAR_THRESHOLD = 0.22)
+  closed for about 5 s  ->  alarm + one alert sent
+```
 
 1. OpenCV captures a frame from the webcam.
 2. MediaPipe Face Landmarker returns facial landmarks.
